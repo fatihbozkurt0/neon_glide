@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Glide</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-layer">
+            <div id="start-screen" class="panel">
+                <h1>NEON GLIDE</h1>
+                <p>Press SPACE or Click to jump</p>
+                <button id="start-btn">PLAY</button>
+            </div>
+            <div id="hud" class="hidden">
+                <div id="score">0</div>
+            </div>
+            <div id="game-over-screen" class="panel hidden">
+                <h2>SYSTEM FAILURE</h2>
+                <p>Score: <span id="final-score">0</span></p>
+                <button id="restart-btn">REBOOT</button>
+            </div>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
