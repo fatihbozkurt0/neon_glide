@@ -23,7 +23,8 @@ const GAME_HEIGHT = 800;
 
 // Obstacles
 let obstacles = [];
-let gameSpeed = 3.5;
+let baseGameSpeed = 3.5;
+let speedMultiplier = 1.0;
 let obstacleSpawnTimer = 0;
 const OBSTACLE_WIDTH = 60;
 const OBSTACLE_GAP = 180;
@@ -61,6 +62,7 @@ function resetGame() {
     isGameOver = false;
     obstacles = [];
     obstacleSpawnTimer = 0;
+    speedMultiplier = 1.0;
 }
 
 function spawnObstacle() {
@@ -128,16 +130,23 @@ function update(deltaTime) {
         player.velocity = 0; 
     }
 
+    // Gradual speed acceleration
+    if (speedMultiplier < 2.0) {
+        speedMultiplier += 0.0001 * timeScale;
+    }
+
     // Obstacle logic
+    let currentSpawnRate = SPAWN_RATE / speedMultiplier;
     obstacleSpawnTimer += deltaTime;
-    if (obstacleSpawnTimer > SPAWN_RATE) {
+    if (obstacleSpawnTimer > currentSpawnRate) {
         spawnObstacle();
         obstacleSpawnTimer = 0;
     }
 
+    let currentSpeed = baseGameSpeed * speedMultiplier;
     for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
-        obs.x -= gameSpeed * (deltaTime / 16.66); // Normalize speed to 60fps
+        obs.x -= currentSpeed * timeScale;
 
         let hitTop = circleRectCollide(player, obs.x, 0, obs.width, obs.topHeight);
         let hitBottom = circleRectCollide(player, obs.x, obs.bottomY, obs.width, GAME_HEIGHT - obs.bottomY);
