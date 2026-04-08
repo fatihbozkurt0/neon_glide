@@ -104,13 +104,17 @@ function jump() {
 
 function update(deltaTime) {
     if (!isPlaying || isGameOver) return;
+    
+    // Handle variable refresh rate (time scaling relative to 60fps)
+    let timeScale = deltaTime / 16.66;
+    if (timeScale > 5) timeScale = 5; // prevent huge physics jumps on lag spike or tab switch
 
     // Physics
-    player.velocity += player.gravity;
+    player.velocity += player.gravity * timeScale;
     if (player.velocity > player.maxVelocity) {
         player.velocity = player.maxVelocity;
     }
-    player.y += player.velocity;
+    player.y += player.velocity * timeScale;
 
     // Rotation based on velocity
     player.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, (player.velocity * 0.1)));
